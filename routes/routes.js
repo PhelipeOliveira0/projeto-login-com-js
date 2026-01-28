@@ -7,7 +7,7 @@ const sessionStorage = require('../util/sessionStorage')
 const passport = require('passport')
 
 router.use(session({
-    secret: 'alura',
+    secret: 'supersegredo',
     resave: false,
     saveUninitialized: false,
     store: sessionStorage
@@ -30,8 +30,15 @@ router.get('/auth/github',
 router.get('/auth/github/callback', 
   passport.authenticate('github', { failureRedirect: '/' }),
   function(req, res) {
-    // Successful authentication, redirect home.
-    res.redirect('/');
+    res.redirect('/members');
+  });
+router.get('/auth/google',
+  passport.authenticate('google', { scope: ['profile'] }));
+
+router.get('/auth/google/callback', 
+  passport.authenticate('google', { failureRedirect: '/' }),
+  function(req, res) {
+    res.redirect('/members');
   });
 router.use(controller.get404Page)
 
